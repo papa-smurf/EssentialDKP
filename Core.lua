@@ -1,8 +1,3 @@
---[[
-	Core.lua is intended to store all core functions and variables to be used throughout the addon. 
-	Don't put anything in here that you don't want to be loaded immediately after the Libs but before initialization.
---]]
-
 local _, core = ...;
 local _G = _G;
 local L = core.L;

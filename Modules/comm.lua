@@ -1,9 +1,3 @@
---[[
-
-  Usage so far:  MonDKP.Sync:SendData(prefix, core.WorkingTable)  --sends table through comm channel for updates
-
---]]  
-
 local _, core = ...;
 local _G = _G;
 local MonDKP = core.MonDKP;
@@ -13,8 +7,6 @@ MonDKP.Sync = LibStub("AceAddon-3.0"):NewAddon("MonDKP", "AceComm-3.0")
 
 local LibAceSerializer = LibStub:GetLibrary("AceSerializer-3.0")
 local LibDeflate = LibStub:GetLibrary("LibDeflate")
---local LibCompress = LibStub:GetLi7brary("LibCompress")
---local LibCompressAddonEncodeTable = LibCompress:GetAddonEncodeTable()
 
 function MonDKP:ValidateSender(sender)                -- returns true if "sender" has permission to write officer notes. false if not or not found.
   local rankIndex = MonDKP:GetGuildRankIndex(sender);
@@ -116,16 +108,9 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
       return;
     elseif prefix == "MonDKPBidder" then
       if core.BidInProgress and core.IsOfficer then
-        if message == "pass" then
-          MonDKP:Print(sender.." has passed.")
-          return
-        else
-          MonDKP_CHAT_MSG_WHISPER(message, sender)
-          return
-        end
-      else
-        return
+        MonDKP_CHAT_MSG_WHISPER(message, sender)
       end
+      return
     elseif prefix == "MonDKPTalents" then
       local search = MonDKP:Table_Search(MonDKP_DKPTable, sender, "player")
 

@@ -733,7 +733,6 @@ function MonDKP:BidInterface_Create()
   f.Pass:SetHighlightFontObject("MonDKPSmallCenter");
   f.Pass:SetScript("OnClick", function()
     f.Bid:ClearFocus();
-    MonDKP.Sync:SendData("MonDKPBidder", "pass")
     core.BidInterface:Hide()
   end)
 
