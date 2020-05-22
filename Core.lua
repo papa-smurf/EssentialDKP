@@ -93,7 +93,7 @@ local MINOR = 3
 local PATCH = 6
 
 core.MonDKPUI = {}        -- global storing entire Configuration UI to hide/show UI
-core.MonVersion = string.format("v%s.%s.%s", MAJOR, MINOR, PATHC)
+core.MonVersion = string.format("v%s.%s.%s", MAJOR, MINOR, PATCH)
 core.BuildNumber = BASE+(MAJOR*10000)+(MINOR*100)+PATCH;
 core.TableWidth, core.TableRowHeight, core.TableNumRows = 500, 18, 27; -- width, row height, number of rows
 core.SelectedData = { player="none"};         -- stores data of clicked row for manipulation.
