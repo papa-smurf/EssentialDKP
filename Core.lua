@@ -87,7 +87,7 @@ core.EncounterList = {      -- Event IDs must be in the exact same order as core
 	}
 }
 
-local BASE = 14000
+local BASE = 140000
 local MAJOR = 1
 local MINOR = 3
 local PATCH = 6
