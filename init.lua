@@ -335,9 +335,7 @@ function MonDKP_OnEvent(self, event, arg1, ...)
       elseif k == "Seven" then raidString = "MC, BWL, AQ40"
       end
 
-      if k ~= "Three" then 	-- remove when three day raid lockouts are added
-        MonDKP:Print(raidString.." "..L["RESETSIN"]..days..hours..mins.." ("..date("%A @ %H:%M:%S%p", v)..")")
-      end
+      MonDKP:Print(raidString.." "..L["RESETSIN"]..days..hours..mins.." ("..date("%A @ %H:%M:%S%p", v)..")")
     end
 
     self:UnregisterEvent("UPDATE_INSTANCE_INFO");
@@ -372,27 +370,27 @@ function MonDKP_OnEvent(self, event, arg1, ...)
               for i=15, #MonDKP_DB.bossargs.LastKilledNPC do  		-- trims the tail end of the stack
                 table.remove(MonDKP_DB.bossargs.LastKilledNPC, i)
               end
-            end
-            table.insert(MonDKP_DB.bossargs.LastKilledNPC, 1, arg3)
+          end
+          table.insert(MonDKP_DB.bossargs.LastKilledNPC, 1, arg3)
           end
         end
       end
-    end
+  end
   elseif event == "LOOT_OPENED" then
     MonDKP:CheckOfficer();
     if core.IsOfficer then
-      
+
       if not IsInRaid() and arg1 == false then  -- only fires hook when autoloot is not active if not in a raid to prevent nil value error
         MonDKP_Register_ShiftClickLootWindowHook()
       elseif IsInRaid() then
         MonDKP_Register_ShiftClickLootWindowHook()
       end
-      
+
       local lootTable = {}
       local lootList = {};
 
       if IsInRaid() then
-        
+
         for i=1, GetNumLootItems() do
           if LootSlotHasItem(i) and GetLootSlotLink(i) then
             local _,link,quality = GetItemInfo(GetLootSlotLink(i))
@@ -401,14 +399,14 @@ function MonDKP_OnEvent(self, event, arg1, ...)
             end
           end
         end
-        
+
         local name
         if not UnitIsFriend("player", "target") and UnitIsDead("target") then
           name = UnitName("target")  -- sets bidding window name to current target
         else
           name = core.LastKilledBoss  -- sets name to last killed boss if no target is available (chests)
         end
-        
+
         lootTable.boss=name
         MonDKP.Sync:SendData("MonDKPBossLoot", lootTable)
 
