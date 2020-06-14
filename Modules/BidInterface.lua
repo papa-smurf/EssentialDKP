@@ -832,7 +832,7 @@ function MonDKP:BidInterface_Create()
     end
   end
   f.bidTable:SetScript("OnVerticalScroll", function(self, offset)
-    FauxScrollFrame_OnVerticalScroll(self, offset, height, BidderScrollFrame_Update)
+    FauxScrollFrame_OnVerticalScroll(self, offset, height, BidInterface_Update)
   end)
 
   ---------------------------------------
