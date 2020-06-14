@@ -22,17 +22,64 @@ function MonDKP:LootTable_Set(lootList)
   lootTable = lootList
 end
 
+local bidderDkpCache = {} 
+
+local function Compare_MinimumBidValues(a, b)
+  if(a["bid"] == b["bid"]) then
+    
+    local aTotalDkp = 0;
+    local bTotalDkp = 0;
+    
+    if (bidderDkpCache[a["player"]]) then
+      aTotalDkp = bidderDkpCache[a["player"]]
+    else
+      aTotalDkp = MonDKP:Table_Search(MonDKP_DKPTable, a["player"])
+    end
+    
+    if (bidderDkpCache[b["player"]]) then
+      bTotalDkp = bidderDkpCache[b["player"]]
+    else
+      bTotalDkp = MonDKP:Table_Search(MonDKP_DKPTable, b["player"])
+    end
+    
+    return aTotalDkp > bTotalDkp
+    
+  else
+    return a["bid"] > b["bid"]
+  end
+end
+
+local function Compare_StaticItemValues(a, b)
+  return a["dkp"] > b["dkp"]
+end
+
+local function Compare_Roll(a, b)
+  return a["roll"] > b["roll"]
+end
+
 local function SortBidTable()
   mode = MonDKP_DB.modes.mode;
-  table.sort(Bids_Submitted, function(a, b)
-    if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-      return a["bid"] > b["bid"]
-    elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
-      return a["dkp"] > b["dkp"]
-    elseif mode == "Roll Based Bidding" then
-      return a["roll"] > b["roll"]
+  
+  local _callback = nil
+  
+  if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
+    _callback = Compare_MinimumBidValues
+  elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
+      _callback = Compare_StaticItemValues
+  elseif mode == "Roll Based Bidding" then
+      _callback = Compare_Roll
+  end
+  
+  if _callback then
+    for _,bid in pairs(Bids_Submitted) do
+      bidderDkpCache[bid.player] = MonDKP:Table_Search(MonDKP_DKPTable, bid.player)
     end
-  end)
+  
+    table.sort(Bids_Submitted, _callback)
+    
+    bidderDkpCache = {} -- clear cache so we wont have wrong data after award. yeah i know its not performant...   
+  end
+
 end
 
 local function RollMinMax_Get()
