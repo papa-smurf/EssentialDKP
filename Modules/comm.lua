@@ -423,7 +423,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
             for i=1, #deserialized.Loot do
               local search = MonDKP:Table_Search(MonDKP_Loot, deserialized.Loot[i].index, "index")
 
-              if not search and ((MonDKP_Archive.LootMeta and MonDKP_Archive.LootMeta < deserialized.DKP[i].date) or (not MonDKP_Archive.LootMeta)) then -- prevents adding entry if this entry has already been archived
+              if not search and ((MonDKP_Archive.LootMeta and MonDKP_Archive.LootMeta < deserialized.Loot[i].date) or (not MonDKP_Archive.LootMeta)) then -- prevents adding entry if this entry has already been archived
                 if deserialized.Loot[i].deletes then
                   local search_del = MonDKP:Table_Search(MonDKP_Loot, deserialized.Loot[i].deletes, "index")
 
