@@ -22,17 +22,60 @@ function MonDKP:LootTable_Set(lootList)
   lootTable = lootList
 end
 
+local bidderDkpCache = {} 
+
+local function Compare_MinimumBidValues(a, b)
+  if(a["bid"] == b["bid"]) then
+    
+    local aTotalDkp = 0;
+    local bTotalDkp = 0;
+
+    aTotalDkp = bidderDkpCache[a["player"]]
+    bTotalDkp = bidderDkpCache[b["player"]]
+    
+    return aTotalDkp > bTotalDkp
+    
+  else
+    return a["bid"] > b["bid"]
+  end
+end
+
+local function Compare_StaticItemValues(a, b)
+  return a["dkp"] > b["dkp"]
+end
+
+local function Compare_Roll(a, b)
+  return a["roll"] > b["roll"]
+end
+
 local function SortBidTable()
   mode = MonDKP_DB.modes.mode;
-  table.sort(Bids_Submitted, function(a, b)
-    if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-      return a["bid"] > b["bid"]
-    elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
-      return a["dkp"] > b["dkp"]
-    elseif mode == "Roll Based Bidding" then
-      return a["roll"] > b["roll"]
+  
+  local _callback = nil
+  
+  if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
+    _callback = Compare_MinimumBidValues
+  elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
+      _callback = Compare_StaticItemValues
+  elseif mode == "Roll Based Bidding" then
+      _callback = Compare_Roll
+  end
+  
+  if _callback then
+    for _,bid in ipairs(Bids_Submitted) do
+      local search = MonDKP:Table_Search(MonDKP_DKPTable, bid.player)
+      if search then
+        bidderDkpCache[bid.player] = MonDKP_DKPTable[search[1][1]].dkp
+      else 
+        bidderDkpCache[bid.player] = 0
+      end
     end
-  end)
+  
+    table.sort(Bids_Submitted, _callback)
+    
+    bidderDkpCache = {} -- clear cache so we wont have wrong data after award. yeah i know its not performant...   
+  end
+
 end
 
 local function RollMinMax_Get()
@@ -155,29 +198,29 @@ function BidInterface_Update()
   for i=1, showRows do
     row = core.BidInterface.bidTable.Rows[i]
     index = offset + i
-    local dkp_total = MonDKP:Table_Search(MonDKP_DKPTable, Bids_Submitted[i].player)
+    local dkp_total = MonDKP:Table_Search(MonDKP_DKPTable, Bids_Submitted[index].player)
     local c
     if dkp_total then
       c = MonDKP:GetCColors(MonDKP_DKPTable[dkp_total[1][1]].class)
     else
-      local createProfile = MonDKP_Profile_Create(Bids_Submitted[i].player)
+      local createProfile = MonDKP_Profile_Create(Bids_Submitted[index].player)
 
       if createProfile then
-        dkp_total = MonDKP:Table_Search(MonDKP_DKPTable, Bids_Submitted[i].player)
+        dkp_total = MonDKP:Table_Search(MonDKP_DKPTable, Bids_Submitted[index].player)
         c = MonDKP:GetCColors(MonDKP_DKPTable[dkp_total[1][1]].class)
       else       -- if unable to create profile, feeds grey color
         c = { r="aa", g="aa", b="aa"}
       end
     end
-    rank = MonDKP:GetGuildRank(Bids_Submitted[i].player)
+    rank = MonDKP:GetGuildRank(Bids_Submitted[index].player)
     if Bids_Submitted[index] then
       row:Show()
       row.index = index
       row.Strings[1].rowCounter:SetText(index)
-      row.Strings[1]:SetText(Bids_Submitted[i].player.." |cff666666("..rank..")|r")
+      row.Strings[1]:SetText(Bids_Submitted[index].player.." |cff666666("..rank..")|r")
       row.Strings[1]:SetTextColor(c.r, c.g, c.b, 1)
       if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
-        row.Strings[2]:SetText(Bids_Submitted[i].bid)
+        row.Strings[2]:SetText(Bids_Submitted[index].bid)
         row.Strings[3]:SetText(MonDKP_round(MonDKP_DKPTable[dkp_total[1][1]].dkp, MonDKP_DB.modes.rounding))
       elseif mode == "Roll Based Bidding" then
         local minRoll;
@@ -202,10 +245,10 @@ function BidInterface_Update()
         if tonumber(minRoll) < 1 then minRoll = 1 end
         if tonumber(maxRoll) < 1 then maxRoll = 1 end
 
-        row.Strings[2]:SetText(Bids_Submitted[i].roll..Bids_Submitted[i].range)
+        row.Strings[2]:SetText(Bids_Submitted[index].roll..Bids_Submitted[index].range)
         row.Strings[3]:SetText(math.floor(minRoll).."-"..math.floor(maxRoll))
       elseif mode == "Static Item Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then
-        row.Strings[3]:SetText(MonDKP_round(Bids_Submitted[i].dkp, MonDKP_DB.modes.rounding))
+        row.Strings[3]:SetText(MonDKP_round(Bids_Submitted[index].dkp, MonDKP_DB.modes.rounding))
       end
     else
       row:Hide()
@@ -785,7 +828,7 @@ function MonDKP:BidInterface_Create()
     end
   end
   f.bidTable:SetScript("OnVerticalScroll", function(self, offset)
-    FauxScrollFrame_OnVerticalScroll(self, offset, height, BidderScrollFrame_Update)
+    FauxScrollFrame_OnVerticalScroll(self, offset, height, BidInterface_Update)
   end)
 
   ---------------------------------------
