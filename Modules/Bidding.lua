@@ -30,11 +30,6 @@ function MonDKP:BidsSubmitted_Clear()
   Bids_Submitted = {};
 end
 
-function MonDKP:BidsSubmitted_Add(player, value)
-  table.insert(Bids_Submitted, {player=player, bid=tonumber(value)})
-  BidScrollFrame_Update()
-end
-
 local function Roll_OnEvent(self, event, arg1, ...)
   if event == "CHAT_MSG_SYSTEM" and core.BidInProgress then
 
