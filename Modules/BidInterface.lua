@@ -34,12 +34,14 @@ local function Compare_MinimumBidValues(a, b)
       aTotalDkp = bidderDkpCache[a["player"]]
     else
       aTotalDkp = MonDKP:Table_Search(MonDKP_DKPTable, a["player"])
+      bidderDkpCache[a["player"]] = aTotalDkp
     end
     
     if (bidderDkpCache[b["player"]]) then
       bTotalDkp = bidderDkpCache[b["player"]]
     else
       bTotalDkp = MonDKP:Table_Search(MonDKP_DKPTable, b["player"])
+      bidderDkpCache[b["player"]] = bTotalDkp
     end
     
     return aTotalDkp > bTotalDkp
