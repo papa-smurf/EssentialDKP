@@ -469,8 +469,10 @@ function MonDKP_SyncDeleted()
   local deleted = {}
 
   for k,v in pairs(MonDKP_Archive) do
-    if MonDKP_Archive[k].deleted then
-      table.insert(deleted, { player=k, deleted=v.deleted, edited=v.edited })
+    if type(MonDKP_Archive[k]) == "table" then
+      if MonDKP_Archive[k].deleted then
+        table.insert(deleted, { player=k, deleted=v.deleted, edited=v.edited })
+      end
     end
   end
 
