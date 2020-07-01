@@ -95,7 +95,7 @@ MonDKP.Commands = {
       MonDKP:BroadcastTimer(tonumber(time), title)
     end
   end,
-  ["export"] = function(time, ...)
+  ["sync"] = function(time, ...)
     MonDKP:ToggleExportWindow()
   end,
   ["loot"] = function(time, ...)
@@ -125,7 +125,7 @@ MonDKP.Commands = {
     MonDKP:Print("|cff00cc66/dkp bid [itemlink]|r - "..L["OPENAUCWINHELP"]);
     MonDKP:Print("|cff00cc66/dkp award [item link]|r - "..L["DKPAWARDHELP"]);
     MonDKP:Print("|cff00cc66/dkp modes|r - "..L["DKPMODESHELP"]);
-    MonDKP:Print("|cff00cc66/dkp export|r - "..L["DKPEXPORTHELP"]);
+    MonDKP:Print("|cff00cc66/dkp sync|r - "..L["DKPEXPORTHELP"]);
     MonDKP:Print("|cff00cc66/dkp loot|r - "..L["DKPLOOTHELP"]);
     MonDKP:Print(" ");
     MonDKP:Print(L["WHISPERCMDSHELP"]);
