@@ -557,7 +557,7 @@ local function StartBidding()
     else
       MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText().." Min Bid: "..core.BiddingWindow.minBid:GetText(), CurrItemIcon)
     end
-    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo,"..core.BiddingWindow.item:GetText()..","..core.BiddingWindow.minBid:GetText()..","..CurrItemIcon..","..core.BiddingWindow.maxBid:GetText())
+    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo#"..core.BiddingWindow.item:GetText().."#"..core.BiddingWindow.minBid:GetText().."#"..CurrItemIcon.."#"..core.BiddingWindow.maxBid:GetText())
     MonDKP:CurrItem_Set(core.BiddingWindow.item:GetText(), core.BiddingWindow.minBid:GetText(), CurrItemIcon, core.BiddingWindow.maxBid:GetText())
 
     if MonDKP_DB.defaults.AutoOpenBid then  -- toggles bid window if option is set to
@@ -607,7 +607,7 @@ local function StartBidding()
   else
     if MonDKP_DB.modes.costvalue == "Percent" then perc = "%" else perc = " DKP" end;
     MonDKP:BroadcastBidTimer(core.BiddingWindow.bidTimer:GetText(), core.BiddingWindow.item:GetText().." Cost: "..core.BiddingWindow.cost:GetNumber()..perc, CurrItemIcon)
-    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo,"..core.BiddingWindow.item:GetText()..","..core.BiddingWindow.cost:GetText()..perc..","..CurrItemIcon..",0")
+    MonDKP.Sync:SendData("MonDKPCommand", "BidInfo#"..core.BiddingWindow.item:GetText().."#"..core.BiddingWindow.cost:GetText()..perc.."#"..CurrItemIcon.."#0")
     MonDKP:BidInterface_Toggle()
     MonDKP:CurrItem_Set(core.BiddingWindow.item:GetText(), core.BiddingWindow.cost:GetText()..perc, CurrItemIcon, 0)
   end
@@ -737,7 +737,7 @@ end
 
 function MonDKP:BroadcastBidTimer(seconds, title, itemIcon)       -- broadcasts timer and starts it natively
   local title = title;
-  MonDKP.Sync:SendData("MonDKPCommand", "StartBidTimer,"..seconds..","..title..","..itemIcon)
+  MonDKP.Sync:SendData("MonDKPCommand", "StartBidTimer#"..seconds.."#"..title.."#"..itemIcon)
   MonDKP:StartBidTimer(seconds, title, itemIcon)
 
   if strfind(seconds, "{") then

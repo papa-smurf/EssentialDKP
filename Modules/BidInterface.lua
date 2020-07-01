@@ -5,12 +5,6 @@ local L = core.L;
 
 local lootTable = {};
 
---[[["132744"] = "|cffa335ee|Hitem:12895::::::::60:::::|h[Breastplate of the Chromatic Flight]|h|r",
-  ["132585"] = "|cffa335ee|Hitem:16862::::::::60:::::|h[Sabatons of Might]|h|r",
-  ["133066"] = "|cffff8000|Hitem:17182::::::::60:::::|h[Sulfuras, Hand of Ragnaros]|h|r",
-  ["133173"] = "|cffa335ee|Hitem:16963::::::::60:::::|h[Helm of Wrath]|h|r",
-  ["135065"] = "|cffa335ee|Hitem:16961::::::::60:::::|h[Pauldrons of Wrath]|h|r",--]]
-
 local width, height, numrows = 370, 18, 13
 local Bids_Submitted = {};
 local CurrItemForBid, CurrItemIcon;
@@ -406,6 +400,12 @@ function MonDKP:CurrItem_Set(item, value, icon, value2)
   -- Overwrite the list to contain only the item
   local _,tmpLink,_,_,_,_,_,_,_,tmpIcon = GetItemInfo(item)
   local currItemInLoot = false
+  
+  if tmpLink == nil then -- Kudos to CommDKP!
+    C_Timer.After(0.5, function () MonDKP:CurrItem_Set(item, value, icon, value2); end);
+    return;
+  end
+  
   for _,_i in pairs(lootTable) do
     if _i.link == tmpLink then currItemInLoot = true end
   end
