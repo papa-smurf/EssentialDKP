@@ -107,21 +107,21 @@ local function SavedVariablesSync(order, input_data)
   elseif order == "import" then -- import
     if not data then
       return
-    end
-    compressed = LibDeflate:DecodeForPrint(input_data)
-    serialized = LibDeflate:DecompressDeflate(compressed)
-    local success, data = LibAceSerializer:Deserialize(serialized);
-    
-    if success then
-      for _,var in pairs(savedVariables) do
-        if data[var] then
+  end
+  compressed = LibDeflate:DecodeForPrint(input_data)
+  serialized = LibDeflate:DecompressDeflate(compressed)
+  local success, data = LibAceSerializer:Deserialize(serialized);
+
+  if success then
+    for _,var in pairs(savedVariables) do
+      if data[var] then
         _G[var] = data[var]
-        end
       end
-      MonDKP:Print("Import success");
-    else
-      MonDKP:Print("Import error");
     end
+    MonDKP:Print("Import success");
+  else
+    MonDKP:Print("Import error");
+  end
   end
   return nil
 end
@@ -138,6 +138,21 @@ local function GenerateDKPTables(table, format)
 
   if table == "FullImport" then
     SavedVariablesSync("import", MonDKPExportBoxEditBox:GetText())
+
+    StaticPopupDialogs["SUGGEST_RELOAD"] = {
+      text = "|CFFFF0000"..L["WARNING"].."|r: "..L["MUSTRELOADUI"],
+      button1 = L["YES"],
+      button2 = L["NO"],
+      OnAccept = function()
+        ReloadUI();
+      end,
+      timeout = 0,
+      whileDead = true,
+      hideOnEscape = true,
+      preferredIndex = 3,
+    }
+    StaticPopup_Show ("SUGGEST_RELOAD")
+
     return;
   end
 
@@ -410,67 +425,11 @@ function MonDKPExportBox_Show(text)
     end)
     f:Show()
 
-    -- Format DROPDOWN box
-    local CurFormat;
-
-    f.FormatDropDown = CreateFrame("FRAME", "MonDKPModeSelectDropDown", f, "MonolithDKPUIDropDownMenuTemplate")
-    f.FormatDropDown:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 20, 55)
-    UIDropDownMenu_SetWidth(f.FormatDropDown, 100)
-    UIDropDownMenu_SetText(f.FormatDropDown, "Select Format")
-
-    -- Create and bind the initialization function to the dropdown menu
-    UIDropDownMenu_Initialize(f.FormatDropDown, function(self, level, menuList)
-      local Format = UIDropDownMenu_CreateInfo()
-      Format.func = self.SetValue
-      Format.fontObject = "MonDKPSmallCenter"
-      Format.text, Format.arg1, Format.checked, Format.isNotRadio = "HTML", "HTML", "HTML" == CurFormat, false
-      UIDropDownMenu_AddButton(Format)
-      Format.text, Format.arg1, Format.checked, Format.isNotRadio = "CSV", "CSV", "CSV" == CurFormat, false
-      UIDropDownMenu_AddButton(Format)
-      Format.text, Format.arg1, Format.checked, Format.isNotRadio = "XML", "XML", "XML" == CurFormat, false
-      UIDropDownMenu_AddButton(Format)
-    end)
-
-    -- Dropdown Menu Function
-    function f.FormatDropDown:SetValue(arg1)
-      CurFormat = arg1;
-      if arg1 == "HTML" then
-        ExportDefinition = "|CFFAEAEDDExport below one at a time in order. Copy all html and paste into local .html file one after the other. DKP and Loot History often take a few seconds to generate and will lock your screen briefly. As a result they are limited to the most recent 200 entries for each. All tables will be tabbed for convenience.|r"
-      elseif arg1 == "CSV" then
-        ExportDefinition = "|CFFAEAEDDCSV can only be used for applications designed specifically to distribute each value to the correct variable. Generate them one at a time (in order) and copy/paste all contents, one after the other, and use as needed.|r"
-      elseif arg1 == "XML" then
-        ExportDefinition = "|CFFAEAEDDGenerate tables one at a time and copy/paste all contents into a new .xml file on your desktop. XML files are for use with web applications designed to parse this XML format.|r"
-      end
-
-      f.desc:SetText(ExportDefinition);
-      UIDropDownMenu_SetText(f.FormatDropDown, CurFormat)
-      CloseDropDownMenus()
-    end
-
-    f.FormatDropDown:SetScript("OnEnter", function(self)
-      GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
-      GameTooltip:SetText("Export Format", 0.25, 0.75, 0.90, 1, true);
-      GameTooltip:AddLine("Select the format you wish to export data with.", 1.0, 1.0, 1.0, true);
-      GameTooltip:Show();
-    end)
-    f.FormatDropDown:SetScript("OnLeave", function(self)
-      GameTooltip:Hide()
-    end)
-
-    StaticPopupDialogs["NO_FORMAT"] = {
-      text = "You do not have a format selected.",
-      button1 = "Ok",
-      timeout = 0,
-      whileDead = true,
-      hideOnEscape = true,
-      preferredIndex = 3,
-    }
-
     f.ImportDataButton = MonDKP:CreateButton("BOTTOMLEFT", f, "BOTTOMLEFT", 200, 45, "Import");
     f.ImportDataButton:SetSize(150, 24)
     f.ImportDataButton:SetScript("OnClick", function()
       GenerateDKPTables("FullImport", nil)
-      end)
+    end)
 
     f.ExportDataButton = MonDKP:CreateButton("BOTTOMLEFT", f, "BOTTOMLEFT", 200, 20, "Export");
     f.ExportDataButton:SetSize(150, 24)
@@ -478,46 +437,105 @@ function MonDKPExportBox_Show(text)
       GenerateDKPTables("FullExport", nil)
     end)
 
-    f.GenerateActivityButton = MonDKP:CreateButton("BOTTOMRIGHT", f, "BOTTOMRIGHT", -200, 45, "1) "..L["GENACTIVITY"]);
-    f.GenerateActivityButton:SetSize(150, 24)
-    f.GenerateActivityButton:SetScript("OnClick", function()
-      if CurFormat then
-        GenerateDKPTables("Activity", CurFormat)
-      else
-        StaticPopup_Show ("NO_FORMAT")
-      end
-    end)
+    -- Begin officer only buttons
+    if core.IsOfficer then
+      -- Format DROPDOWN box
+      local CurFormat;
 
-    f.GenerateDKPButton = MonDKP:CreateButton("BOTTOMRIGHT", f, "BOTTOMRIGHT", -200, 20, "2) "..L["GENDKPTABLE"]);
-    f.GenerateDKPButton:SetSize(150, 24)
-    f.GenerateDKPButton:SetScript("OnClick", function()
-      if CurFormat then
-        GenerateDKPTables(MonDKP_DKPTable, CurFormat)
-      else
-        StaticPopup_Show ("NO_FORMAT")
-      end
-    end)
+      f.FormatDropDown = CreateFrame("FRAME", "MonDKPModeSelectDropDown", f, "MonolithDKPUIDropDownMenuTemplate")
+      f.FormatDropDown:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 20, 55)
+      UIDropDownMenu_SetWidth(f.FormatDropDown, 100)
+      UIDropDownMenu_SetText(f.FormatDropDown, "Select Format")
 
-    f.GenerateDKPHistoryButton = MonDKP:CreateButton("BOTTOMRIGHT", f, "BOTTOMRIGHT", -45, 45, "3) "..L["GENDKPHIST"]);
-    f.GenerateDKPHistoryButton:SetSize(150, 24)
-    f.GenerateDKPHistoryButton:SetScript("OnClick", function()
-      if CurFormat then
-        GenerateDKPTables(MonDKP_DKPHistory, CurFormat)
-      else
-        StaticPopup_Show ("NO_FORMAT")
-      end
-    end)
+      -- Create and bind the initialization function to the dropdown menu
+      UIDropDownMenu_Initialize(f.FormatDropDown, function(self, level, menuList)
+        local Format = UIDropDownMenu_CreateInfo()
+        Format.func = self.SetValue
+        Format.fontObject = "MonDKPSmallCenter"
+        Format.text, Format.arg1, Format.checked, Format.isNotRadio = "HTML", "HTML", "HTML" == CurFormat, false
+        UIDropDownMenu_AddButton(Format)
+        Format.text, Format.arg1, Format.checked, Format.isNotRadio = "CSV", "CSV", "CSV" == CurFormat, false
+        UIDropDownMenu_AddButton(Format)
+        Format.text, Format.arg1, Format.checked, Format.isNotRadio = "XML", "XML", "XML" == CurFormat, false
+        UIDropDownMenu_AddButton(Format)
+      end)
 
-    f.GenerateDKPLootButton = MonDKP:CreateButton("BOTTOMRIGHT", f, "BOTTOMRIGHT", -45, 20, "4) "..L["GENLOOTHIST"]);
-    f.GenerateDKPLootButton:SetSize(150, 24)
-    f.GenerateDKPLootButton:SetScript("OnClick", function()
-      if CurFormat then
-        GenerateDKPTables(MonDKP_Loot, CurFormat)
-      else
-        StaticPopup_Show ("NO_FORMAT")
-      end
-    end)
+      -- Dropdown Menu Function
+      function f.FormatDropDown:SetValue(arg1)
+        CurFormat = arg1;
+        if arg1 == "HTML" then
+          ExportDefinition = "|CFFAEAEDDExport below one at a time in order. Copy all html and paste into local .html file one after the other. DKP and Loot History often take a few seconds to generate and will lock your screen briefly. As a result they are limited to the most recent 200 entries for each. All tables will be tabbed for convenience.|r"
+        elseif arg1 == "CSV" then
+          ExportDefinition = "|CFFAEAEDDCSV can only be used for applications designed specifically to distribute each value to the correct variable. Generate them one at a time (in order) and copy/paste all contents, one after the other, and use as needed.|r"
+        elseif arg1 == "XML" then
+          ExportDefinition = "|CFFAEAEDDGenerate tables one at a time and copy/paste all contents into a new .xml file on your desktop. XML files are for use with web applications designed to parse this XML format.|r"
+        end
 
+        f.desc:SetText(ExportDefinition);
+        UIDropDownMenu_SetText(f.FormatDropDown, CurFormat)
+        CloseDropDownMenus()
+      end
+
+      f.FormatDropDown:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+        GameTooltip:SetText("Export Format", 0.25, 0.75, 0.90, 1, true);
+        GameTooltip:AddLine("Select the format you wish to export data with.", 1.0, 1.0, 1.0, true);
+        GameTooltip:Show();
+      end)
+      f.FormatDropDown:SetScript("OnLeave", function(self)
+        GameTooltip:Hide()
+      end)
+
+      StaticPopupDialogs["NO_FORMAT"] = {
+        text = "You do not have a format selected.",
+        button1 = "Ok",
+        timeout = 0,
+        whileDead = true,
+        hideOnEscape = true,
+        preferredIndex = 3,
+      }
+
+      f.GenerateActivityButton = MonDKP:CreateButton("BOTTOMRIGHT", f, "BOTTOMRIGHT", -200, 45, "1) "..L["GENACTIVITY"]);
+      f.GenerateActivityButton:SetSize(150, 24)
+      f.GenerateActivityButton:SetScript("OnClick", function()
+        if CurFormat then
+          GenerateDKPTables("Activity", CurFormat)
+        else
+          StaticPopup_Show ("NO_FORMAT")
+        end
+      end)
+
+      f.GenerateDKPButton = MonDKP:CreateButton("BOTTOMRIGHT", f, "BOTTOMRIGHT", -200, 20, "2) "..L["GENDKPTABLE"]);
+      f.GenerateDKPButton:SetSize(150, 24)
+      f.GenerateDKPButton:SetScript("OnClick", function()
+        if CurFormat then
+          GenerateDKPTables(MonDKP_DKPTable, CurFormat)
+        else
+          StaticPopup_Show ("NO_FORMAT")
+        end
+      end)
+
+      f.GenerateDKPHistoryButton = MonDKP:CreateButton("BOTTOMRIGHT", f, "BOTTOMRIGHT", -45, 45, "3) "..L["GENDKPHIST"]);
+      f.GenerateDKPHistoryButton:SetSize(150, 24)
+      f.GenerateDKPHistoryButton:SetScript("OnClick", function()
+        if CurFormat then
+          GenerateDKPTables(MonDKP_DKPHistory, CurFormat)
+        else
+          StaticPopup_Show ("NO_FORMAT")
+        end
+      end)
+
+      f.GenerateDKPLootButton = MonDKP:CreateButton("BOTTOMRIGHT", f, "BOTTOMRIGHT", -45, 20, "4) "..L["GENLOOTHIST"]);
+      f.GenerateDKPLootButton:SetSize(150, 24)
+      f.GenerateDKPLootButton:SetScript("OnClick", function()
+        if CurFormat then
+          GenerateDKPTables(MonDKP_Loot, CurFormat)
+        else
+          StaticPopup_Show ("NO_FORMAT")
+        end
+      end)
+    end
+    -- End officer only buttons
     f.SelectAllButton = MonDKP:CreateButton("BOTTOMLEFT", f, "BOTTOMLEFT", 45, 20, L["SELECTALL"]);
     f.SelectAllButton:SetSize(50, 20)
     f.SelectAllButton:SetScript("OnClick", function()
