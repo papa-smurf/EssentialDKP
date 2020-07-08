@@ -68,7 +68,7 @@ end
 local function SavedVariablesSync(order, input_data)
 
   local savedVariables = {
-    "MonDKP_DB",
+    --"MonDKP_DB",
     "MonDKP_Loot",
     "MonDKP_DKPTable",
     "MonDKP_DKPHistory",
@@ -84,6 +84,7 @@ local function SavedVariablesSync(order, input_data)
   local compressed = nil;
 
   if order == "export" then
+    data["MonDKP_DB"] = _G["MonDKP_DB"]
     for _,var in pairs(savedVariables) do
       data[var] = _G[var]
     end
@@ -113,6 +114,23 @@ local function SavedVariablesSync(order, input_data)
   local success, data = LibAceSerializer:Deserialize(serialized);
 
   if success then
+    if data["MonDKP_DB"] then
+      -- Backup pricate settings that are localted in the DB
+      local backup = {
+        ["bidpos"] = _G["MonDKP_DB"].bidpos,
+        ["bidintpos"] = _G["MonDKP_DB"].bidintpos,
+        ["timerpos"] = _G["MonDKP_DB"].timerpos,
+        ["defaults"] = _G["MonDKP_DB"].defaults
+      }
+      -- Load sync data
+      _G["MonDKP_DB"] = data["MonDKP_DB"]
+      -- Load backed up data
+      _G["MonDKP_DB"].bidpos = backup["bidpos"]
+      _G["MonDKP_DB"].bidintpos = backup["bidintpos"]
+      _G["MonDKP_DB"].timerpos = backup["timerpos"]
+      _G["MonDKP_DB"].defaults = backup["defaults"]
+
+    end
     for _,var in pairs(savedVariables) do
       if data[var] then
         _G[var] = data[var]

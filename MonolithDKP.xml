@@ -296,7 +296,9 @@
 					</OnLeave>
 					<OnClick>
 						ToggleDropDownMenu(nil, nil, self:GetParent());
-						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+						if MonDKP_DB.defaults.EnableAudio then
+							PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+						end
 					</OnClick>
 				</Scripts>
 				<NormalTexture name="$parentNormalTexture" parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
@@ -433,7 +435,9 @@
 					</OnLeave>
 					<OnClick>
 						ToggleDropDownMenu(nil, nil, self:GetParent());
-						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+						if MonDKP_DB.defaults.EnableAudio then
+							PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+						end
 					</OnClick>
 				</Scripts>
 				<NormalTexture name="$parentNormalTexture" parentKey="NormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">

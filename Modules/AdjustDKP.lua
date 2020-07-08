@@ -542,7 +542,9 @@ function MonDKP:AdjustDKPTab_Create()
 	MonDKP.ConfigTab2.SelectedOnlyCheck.text:SetFontObject("MonDKPSmallLeft")
 	MonDKP.ConfigTab2.SelectedOnlyCheck:SetPoint("TOP", MonDKP.ConfigTab2.decayDKP, "BOTTOMLEFT", 15, -13);
 	MonDKP.ConfigTab2.SelectedOnlyCheck:SetScript("OnClick", function(self)
-		PlaySound(808)
+		if MonDKP_DB.defaults.EnableAudio then
+			PlaySound(808)
+		end
 	end)
 	MonDKP.ConfigTab2.SelectedOnlyCheck:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -565,7 +567,9 @@ function MonDKP:AdjustDKPTab_Create()
 	MonDKP.ConfigTab2.AddNegative:SetPoint("TOP", MonDKP.ConfigTab2.SelectedOnlyCheck, "BOTTOM", 0, 0);
 	MonDKP.ConfigTab2.AddNegative:SetScript("OnClick", function(self)
 		MonDKP_DB.modes.AddToNegative = self:GetChecked();
-		PlaySound(808)
+		if MonDKP_DB.defaults.EnableAudio then
+			PlaySound(808)
+		end
 	end)
 	MonDKP.ConfigTab2.AddNegative:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -938,7 +942,9 @@ function MonDKP:AdjustDKPTab_Create()
 		MonDKP.ConfigTab2.RaidTimerContainer.StartBonus:SetScript("OnClick", function(self)
 			if self:GetChecked() then
 				MonDKP_DB.DKPBonus.GiveRaidStart = true;
-				PlaySound(808)
+				if MonDKP_DB.defaults.EnableAudio then
+					PlaySound(808)
+				end
 			else
 				MonDKP_DB.DKPBonus.GiveRaidStart = false;
 			end
@@ -964,7 +970,9 @@ function MonDKP:AdjustDKPTab_Create()
 		MonDKP.ConfigTab2.RaidTimerContainer.EndRaidBonus:SetScript("OnClick", function(self)
 			if self:GetChecked() then
 				MonDKP_DB.DKPBonus.GiveRaidEnd = true;
-				PlaySound(808)
+				if MonDKP_DB.defaults.EnableAudio then
+					PlaySound(808)
+				end
 			else
 				MonDKP_DB.DKPBonus.GiveRaidEnd = false;
 			end
@@ -990,7 +998,9 @@ function MonDKP:AdjustDKPTab_Create()
 		MonDKP.ConfigTab2.RaidTimerContainer.StandbyInclude:SetScript("OnClick", function(self)
 			if self:GetChecked() then
 				MonDKP_DB.DKPBonus.IncStandby = true;
-				PlaySound(808)
+				if MonDKP_DB.defaults.EnableAudio then
+					PlaySound(808)
+				end
 			else
 				MonDKP_DB.DKPBonus.IncStandby = false;
 			end

@@ -408,7 +408,9 @@ function MonDKP:StartTimer(seconds, ...)
 
   MonDKP.BidTimer:SetMinMaxValues(0, duration)
   MonDKP.BidTimer.timerTitle:SetText(...)
-  PlaySound(8959)
+  if MonDKP_DB.defaults.EnableAudio then
+    PlaySound(8959)
+  end
 
   if MonDKP_DB.timerpos then
     local a = MonDKP_DB["timerpos"]                   -- retrieves timer's saved position from SavedVariables
@@ -442,11 +444,12 @@ function MonDKP:StartTimer(seconds, ...)
     end
     if tonumber(timerText) < expiring then
       if audioPlayed == false then
-        PlaySound(23639);
+        if MonDKP_DB.defaults.EnableAudio then
+          PlaySound(23639);
+        end
       end
       if tonumber(timerText) < 10 then
         audioPlayed = true
-        StopSound(23639)
       end
       MonDKP.BidTimer:SetStatusBarColor(0.8, 0.1, 0, alpha)
       if alpha > 0 then
