@@ -67,10 +67,14 @@ function DKPTable_OnClick(self)
 		TempSearch = MonDKP:Table_Search(core.SelectedData, core.WorkingTable[SelectedRow].player);
 		if TempSearch == false then
 			tinsert(core.SelectedData, core.WorkingTable[SelectedRow]);
-			PlaySound(808)
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808)
+			end
 		else
 			tremove(core.SelectedData, TempSearch[1][1])
-			PlaySound(868)
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(868)
+			end
 		end
 	else
 		LastSelection = SelectedRow;
@@ -81,7 +85,9 @@ function DKPTable_OnClick(self)
 			end
 			if (TempSearch == false) then
 				tinsert(core.SelectedData, core.WorkingTable[SelectedRow]);
-				PlaySound(808)
+				if MonDKP_DB.defaults.EnableAudio then
+					PlaySound(808)
+				end
 			else
 				core.SelectedData = {}
 			end

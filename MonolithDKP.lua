@@ -482,7 +482,9 @@ function MonDKP:CreateMenu()
 			MonDKP.UIConfig.TabMenu:Hide()
 			MonDKP.UIConfig.expandtab:SetTexture("Interface\\AddOns\\EssentialDKP\\Media\\Textures\\expand-arrow");
 		end
-		PlaySound(62540)
+		if MonDKP_DB.defaults.EnableAudio then
+			PlaySound(62540)
+		end
 		core.ShowState = not core.ShowState
 	end)
 

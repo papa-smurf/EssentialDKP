@@ -25,7 +25,9 @@ function MonDKP:DKPModes_Misc()
 				f.AutoAwardContainer.IncStandby:SetChecked(false)
 				MonDKP_DB.DKPBonus.AutoIncStandby = false;
 			end
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.AutoAwardContainer.AutoAward:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -51,7 +53,9 @@ function MonDKP:DKPModes_Misc()
 				f.AutoAwardContainer.AutoAward:SetChecked(true)
 				MonDKP_DB.modes.AutoAward = true;
 			end
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.AutoAwardContainer.IncStandby:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -83,7 +87,9 @@ function MonDKP:DKPModes_Misc()
 				f.AnnounceBidContainer.AnnounceBidName:SetChecked(false)
 				MonDKP_DB.modes.AnnounceBidName = false;
 			end
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.AnnounceBidContainer.AnnounceBid:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -109,7 +115,9 @@ function MonDKP:DKPModes_Misc()
 				f.AnnounceBidContainer.AnnounceBid:SetChecked(true)
 				MonDKP_DB.modes.AnnounceBid = true;
 			end
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.AnnounceBidContainer.AnnounceBidName:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -157,7 +165,9 @@ function MonDKP:DKPModes_Misc()
 		f.MiscContainer.Standby:SetPoint("TOPLEFT", f.MiscContainer, "TOPLEFT", 10, -10);
 		f.MiscContainer.Standby:SetScript("OnClick", function(self)
 			MonDKP_DB.modes.StandbyOptIn = self:GetChecked();
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.MiscContainer.Standby:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -180,7 +190,9 @@ function MonDKP:DKPModes_Misc()
 		f.MiscContainer.AnnounceAward:SetPoint("TOP", f.MiscContainer.Standby, "BOTTOM", 0, 0);
 		f.MiscContainer.AnnounceAward:SetScript("OnClick", function(self)
 			MonDKP_DB.modes.AnnounceAward = self:GetChecked();
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.MiscContainer.AnnounceAward:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -202,7 +214,9 @@ function MonDKP:DKPModes_Misc()
 		f.MiscContainer.BroadcastBids:SetPoint("TOP", f.MiscContainer.AnnounceAward, "BOTTOM", 0, 0);
 		f.MiscContainer.BroadcastBids:SetScript("OnClick", function(self)
 			MonDKP_DB.modes.BroadcastBids = self:GetChecked();
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.MiscContainer.BroadcastBids:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -224,7 +238,9 @@ function MonDKP:DKPModes_Misc()
 		f.MiscContainer.StoreBids:SetPoint("TOP", f.MiscContainer.BroadcastBids, "BOTTOM", 0, 0);
 		f.MiscContainer.StoreBids:SetScript("OnClick", function(self)
 			MonDKP_DB.modes.StoreBids = self:GetChecked();
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.MiscContainer.StoreBids:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -252,7 +268,9 @@ function MonDKP:DKPModes_Misc()
 		f.DKPAwardContainer.OnlineOnly:SetPoint("TOPLEFT", f.DKPAwardContainer, "TOPLEFT", 10, -10);
 		f.DKPAwardContainer.OnlineOnly:SetScript("OnClick", function(self)
 			MonDKP_DB.modes.OnlineOnly = self:GetChecked();
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.DKPAwardContainer.OnlineOnly:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -275,7 +293,9 @@ function MonDKP:DKPModes_Misc()
 		f.DKPAwardContainer.SameZoneOnly:SetPoint("TOP", f.DKPAwardContainer.OnlineOnly, "BOTTOM", 0, 0);
 		f.DKPAwardContainer.SameZoneOnly:SetScript("OnClick", function(self)
 			MonDKP_DB.modes.SameZoneOnly = self:GetChecked();
-			PlaySound(808);
+			if MonDKP_DB.defaults.EnableAudio then
+				PlaySound(808);
+			end
 		end)
 		f.DKPAwardContainer.SameZoneOnly:SetScript("OnEnter", function(self)
 			GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
