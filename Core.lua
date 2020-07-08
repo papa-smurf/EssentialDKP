@@ -85,7 +85,7 @@ core.EncounterList = {      -- Event IDs must be in the exact same order as core
 local BASE = 140000
 local MAJOR = 1
 local MINOR = 4
-local PATCH = 0
+local PATCH = 1
 
 core.MonDKPUI = {}        -- global storing entire Configuration UI to hide/show UI
 core.MonVersion = string.format("v%s.%s.%s", MAJOR, MINOR, PATCH)
