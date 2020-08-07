@@ -700,7 +700,9 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
       MonDKP_DB.modes.AllowNegativeBidders = false
       f.DKPModesMain.AllowNegativeBidders:Hide()
     end
-    PlaySound(808);
+    if MonDKP_DB.defaults.EnableAudio then
+      PlaySound(808);
+    end
   end)
   f.DKPModesMain.SubZeroBidding:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -731,7 +733,9 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
       MonDKP_DB.modes.AllowNegativeBidders = false;
       MonDKP:Print("Allow Negative Bidders |cffff0000"..L["DISABLED"].."|r")
     end
-    PlaySound(808);
+    if MonDKP_DB.defaults.EnableAudio then
+      PlaySound(808);
+    end
   end)
   f.DKPModesMain.AllowNegativeBidders:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
@@ -907,7 +911,9 @@ elseif MonDKP_DB.modes.mode == "Static Item Values" then
       if f.DKPModesMain.RollContainer.rollMax:GetNumber() == 0 then
         f.DKPModesMain.RollContainer.rollMax:SetNumber(100)
       end
-      PlaySound(808);
+      if MonDKP_DB.defaults.EnableAudio then
+        PlaySound(808);
+      end
     end)
     f.DKPModesMain.RollContainer.UsePerc:SetScript("OnEnter", function(self)
       GameTooltip:SetOwner(self, "ANCHOR_LEFT");

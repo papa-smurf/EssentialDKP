@@ -218,7 +218,9 @@ function MonDKP:ZeroSumBank_Create()
 	f.IncludeStandby:SetPoint("TOPLEFT", f.Distribute, "BOTTOMLEFT", -15, -10);
 	f.IncludeStandby:SetScript("OnClick", function(self)
 		MonDKP_DB.modes.ZeroSumStandby = self:GetChecked();
-		PlaySound(808)
+		if MonDKP_DB.defaults.EnableAudio then
+			PlaySound(808)
+		end
 	end)
 	f.IncludeStandby:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_RIGHT");

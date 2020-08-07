@@ -312,8 +312,9 @@ function MonDKP:AwardConfirm(player, cost, boss, zone, loot, reassign)
 	table.sort(PlayerList, function(a, b)
 		return a < b
 	end)
-
-	PlaySound(850)
+	if MonDKP_DB.defaults.EnableAudio then
+		PlaySound(850)
+	end
 	core.AwardConfirm = core.AwardConfirm or AwardConfirm_Create()
 	core.AwardConfirm:SetShown(not core.AwardConfirm:IsShown())
 
@@ -460,11 +461,14 @@ function MonDKP:AwardConfirm(player, cost, boss, zone, loot, reassign)
 			
 			core.AwardConfirm:SetShown(false)
 		end
-
-		PlaySound(851)
+		if MonDKP_DB.defaults.EnableAudio then
+			PlaySound(851)
+		end
 	end)
 	core.AwardConfirm.noButton:SetScript("OnClick", function()          -- Run when "No" is clicked
-		PlaySound(851)
+		if MonDKP_DB.defaults.EnableAudio then
+			PlaySound(851)
+		end
 		core.AwardConfirm:SetShown(false)
 	end)
 end

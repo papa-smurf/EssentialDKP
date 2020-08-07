@@ -47,7 +47,9 @@ function MonDKPFilterChecks(self)         -- sets/unsets check boxes in conjunct
 			core.classFiltered[v] = false;
 		end
 	end
-	PlaySound(808)
+	if MonDKP_DB.defaults.EnableAudio then
+		PlaySound(808)
+	end
 	MonDKP:FilterDKPTable(core.currentSort, "reset");
 end
 
@@ -72,8 +74,9 @@ local function Tab_OnClick(self)
 	if (scrollChild) then
 		scrollChild:Hide();
 	end
-	
-	PlaySound(808)
+	if MonDKP_DB.defaults.EnableAudio then
+		PlaySound(808)
+	end
 	self:GetParent().ScrollFrame:SetScrollChild(self.content);
 	self.content:Show();
 	self:GetParent().ScrollFrame:SetVerticalScroll(0)
