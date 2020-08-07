@@ -1074,7 +1074,9 @@ function MonDKP:Options()
       MonDKP_DB["defaults"]["supressNotifications"] = false;
       MonDKP:Print(L["NOTIFICATIONSLIKETHIS"].." |cff00ff00"..L["VISIBLE"].."|r.")
     end
-    PlaySound(808)
+    if MonDKP_DB.defaults.EnableAudio then
+      PlaySound(808)
+    end
   end)
 
   -- Combat Logging checkbox
@@ -1096,7 +1098,9 @@ function MonDKP:Options()
   end)
   MonDKP.ConfigTab4.CombatLogging:SetScript("OnClick", function(self)
     MonDKP_DB.defaults.AutoLog = self:GetChecked()
-    PlaySound(808)
+    if MonDKP_DB.defaults.EnableAudio then
+      PlaySound(808)
+    end
   end)
 
   if MonDKP_DB.defaults.AutoOpenBid == nil then
@@ -1120,6 +1124,27 @@ function MonDKP:Options()
     GameTooltip:Show();
   end)
   MonDKP.ConfigTab4.AutoOpenCheckbox:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+  end)
+
+  -- Audio checkbox
+  MonDKP.ConfigTab4.EnableAudioCheckbox = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
+  MonDKP.ConfigTab4.EnableAudioCheckbox:SetChecked(MonDKP_DB.defaults.AutoOpenCheckbox)
+  MonDKP.ConfigTab4.EnableAudioCheckbox:SetScale(0.8);
+  MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetText("|cff5151de".."Enable AddOn Sounds".."|r");
+  MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetScale(1);
+  MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetFontObject("MonDKPSmallLeft")
+  MonDKP.ConfigTab4.EnableAudioCheckbox:SetPoint("TOP", MonDKP.ConfigTab4.AutoOpenCheckbox, "BOTTOM", 0, 0);
+  MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnClick", function(self)
+    MonDKP_DB.defaults.EnableAudio = self:GetChecked()
+  end)
+  MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+    GameTooltip:SetText(L["AUTOOPEN"], 0.25, 0.75, 0.90, 1, true);
+    GameTooltip:AddLine(L["AUTOOPENTTDESC"], 1.0, 1.0, 1.0, true);
+    GameTooltip:Show();
+  end)
+  MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnLeave", function(self)
     GameTooltip:Hide()
   end)
 
@@ -1149,7 +1174,9 @@ function MonDKP:Options()
         MonDKP_DB["defaults"]["SupressTells"] = false;
         MonDKP:Print(L["BIDWHISPARENOW"].." |cff00ff00"..L["VISIBLE"].."|r.")
       end
-      PlaySound(808)
+      if MonDKP_DB.defaults.EnableAudio then
+        PlaySound(808)
+      end
     end)
   end
 

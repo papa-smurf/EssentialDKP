@@ -69,6 +69,7 @@ end
 function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
   if not core.Initialized or core.IsOfficer == nil then return end
   if prefix then
+    MonDKP:Print(prefix)
     --if prefix ~= "MDKPProfile" then print("|cffff0000Received: "..prefix.." from "..sender.."|r") end
     if prefix == "MonDKPQuery" then
       -- set remote seed
@@ -197,11 +198,17 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
         MonDKP:Print(message)
     elseif (prefix == "MonDKPCommand") then
       local command, arg1, arg2, arg3, arg4, arg5 = strsplit("#", message);
+      MonDKP:Print(command)
       if sender ~= UnitName("player") then
         if command == "StartTimer" then
           MonDKP:StartTimer(arg1, arg2)
         elseif command == "StartBidTimer" then
           MonDKP:StartBidTimer(arg1, arg2, arg3)
+          if not core.BiddingInProgress then
+            if MonDKP_DB.defaults.EnableAudio then
+              PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction.ogg", "Master")
+            end
+          end
           core.BiddingInProgress = true;
           if strfind(arg1, "{") then
             MonDKP:Print("Bid timer extended by "..tonumber(strsub(arg1, strfind(arg1, "{")+1)).." seconds.")
@@ -218,6 +225,9 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
             end
           end
           C_Timer.After(2, function()
+            if MonDKP_DB.defaults.EnableAudio then
+              PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction_sold.ogg", "Master")
+            end
             if core.BidInterface and core.BidInterface:IsShown() and not core.BiddingInProgress then
               core.BidInterface:Hide()
             end
