@@ -1129,7 +1129,7 @@ function MonDKP:Options()
 
   -- Audio checkbox
   MonDKP.ConfigTab4.EnableAudioCheckbox = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
-  MonDKP.ConfigTab4.EnableAudioCheckbox:SetChecked(MonDKP_DB.defaults.AutoOpenCheckbox)
+  MonDKP.ConfigTab4.EnableAudioCheckbox:SetChecked(MonDKP_DB.defaults.EnableAudio)
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetScale(0.8);
   MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetText("|cff5151de".."Enable AddOn Sounds".."|r");
   MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetScale(1);
@@ -1140,8 +1140,8 @@ function MonDKP:Options()
   end)
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT");
-    GameTooltip:SetText(L["AUTOOPEN"], 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine(L["AUTOOPENTTDESC"], 1.0, 1.0, 1.0, true);
+    GameTooltip:SetText("Enable AddOn Sounds", 0.25, 0.75, 0.90, 1, true);
+    GameTooltip:AddLine("When checked enables all AddOn sounds. Mutes when unchecked.", 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnLeave", function(self)
