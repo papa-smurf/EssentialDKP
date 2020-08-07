@@ -198,6 +198,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
         MonDKP:Print(message)
     elseif (prefix == "MonDKPCommand") then
       local command, arg1, arg2, arg3, arg4, arg5 = strsplit("#", message);
+      MonDKP:Print(command)
       if sender ~= UnitName("player") then
         if command == "StartTimer" then
           MonDKP:StartTimer(arg1, arg2)
