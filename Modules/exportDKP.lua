@@ -60,7 +60,7 @@ end
 local function ActivePlayersTableToCSV(activePlayers)
   local csv = "charName,class,lastActive\n"
   for name,data in pairs(activePlayers) do
-    csv = csv..name..","..data.class..","..data.lastActive.."\n"
+    csv = csv..name..";"..data.class..";"..data.lastActive.."\n"
   end
   return csv
 end
@@ -230,13 +230,13 @@ local function GenerateDKPTables(table, format)
       GetActivePlayersTable(limit, activePlayers)
       ExportString = ActivePlayersTableToCSV(activePlayers)
     elseif table == MonDKP_DKPTable then
-      Headers = "player,class,DKP,previousDKP,lifetimeGained,lifetimeSpent\n"
+      Headers = "player;class;DKP;previousDKP;lifetimeGained;lifetimeSpent\n"
       ExportString = Headers.."";
       for i=1, #MonDKP_DKPTable do
         if i == #MonDKP_DKPTable then
-          ExportString = ExportString..MonDKP_DKPTable[i].player..","..MonDKP_DKPTable[i].class..","..MonDKP_DKPTable[i].dkp..","..MonDKP_DKPTable[i].previous_dkp..","..MonDKP_DKPTable[i].lifetime_gained..","..MonDKP_DKPTable[i].lifetime_spent;
+          ExportString = ExportString..MonDKP_DKPTable[i].player..";"..MonDKP_DKPTable[i].class..";"..MonDKP_DKPTable[i].dkp..";"..MonDKP_DKPTable[i].previous_dkp..";"..MonDKP_DKPTable[i].lifetime_gained..";"..MonDKP_DKPTable[i].lifetime_spent;
         else
-          ExportString = ExportString..MonDKP_DKPTable[i].player..","..MonDKP_DKPTable[i].class..","..MonDKP_DKPTable[i].dkp..","..MonDKP_DKPTable[i].previous_dkp..","..MonDKP_DKPTable[i].lifetime_gained..","..MonDKP_DKPTable[i].lifetime_spent.."\n";
+          ExportString = ExportString..MonDKP_DKPTable[i].player..";"..MonDKP_DKPTable[i].class..";"..MonDKP_DKPTable[i].dkp..";"..MonDKP_DKPTable[i].previous_dkp..";"..MonDKP_DKPTable[i].lifetime_gained..";"..MonDKP_DKPTable[i].lifetime_spent.."\n";
         end
       end
     elseif table == MonDKP_DKPHistory then
@@ -248,15 +248,15 @@ local function GenerateDKPTables(table, format)
         numrows = #MonDKP_DKPHistory
       end
 
-      Headers = "player,DKP,date,reason\n"
+      Headers = "player;DKP;date;reason\n"
       ExportString = Headers.."";
       for i=1, numrows do
         local PlayerString = strsub(MonDKP_DKPHistory[i].players, 1, -2)
 
         if i == numrows then
-          ExportString = ExportString.."\""..PlayerString.."\""..","..MonDKP_DKPHistory[i].dkp..","..MonDKP_DKPHistory[i].date..",".."\""..MonDKP_DKPHistory[i].reason.."\"";
+          ExportString = ExportString.."\""..PlayerString.."\""..";"..MonDKP_DKPHistory[i].dkp..";"..MonDKP_DKPHistory[i].date..";".."\""..MonDKP_DKPHistory[i].reason.."\"";
         else
-          ExportString = ExportString.."\""..PlayerString.."\""..","..MonDKP_DKPHistory[i].dkp..","..MonDKP_DKPHistory[i].date..",".."\""..MonDKP_DKPHistory[i].reason.."\"".."\n";
+          ExportString = ExportString.."\""..PlayerString.."\""..";"..MonDKP_DKPHistory[i].dkp..";"..MonDKP_DKPHistory[i].date..";".."\""..MonDKP_DKPHistory[i].reason.."\"".."\n";
         end
       end
     elseif table == MonDKP_Loot then
@@ -268,7 +268,7 @@ local function GenerateDKPTables(table, format)
         numrows = #MonDKP_Loot
       end
 
-      Headers = "player,itemName,itemNumber,zone,boss,date,cost\n"
+      Headers = "player;itemName;itemNumber;zone;boss;date;cost\n"
       ExportString = Headers.."";
       for i=1, numrows do
         local cur = MonDKP_Loot[i].loot
@@ -276,9 +276,9 @@ local function GenerateDKPTables(table, format)
         local itemName = strsub(cur, string.find(cur, "::|h%[")+5, string.find(cur, "%]", string.find(cur, "::|h%[")+5)-1)
 
         if i == numrows then
-          ExportString = ExportString..MonDKP_Loot[i].player..",".."\""..itemName.."\""..","..itemNumber..",".."\""..MonDKP_Loot[i].zone.."\""..","..MonDKP_Loot[i].boss..","..MonDKP_Loot[i].date..","..MonDKP_Loot[i].cost;
+          ExportString = ExportString..MonDKP_Loot[i].player..";".."\""..itemName.."\""..";"..itemNumber..";".."\""..MonDKP_Loot[i].zone.."\""..";"..MonDKP_Loot[i].boss..";"..MonDKP_Loot[i].date..";"..MonDKP_Loot[i].cost;
         else
-          ExportString = ExportString..MonDKP_Loot[i].player..",".."\""..itemName.."\""..","..itemNumber..",".."\""..MonDKP_Loot[i].zone.."\""..","..MonDKP_Loot[i].boss..","..MonDKP_Loot[i].date..","..MonDKP_Loot[i].cost.."\n";
+          ExportString = ExportString..MonDKP_Loot[i].player..";".."\""..itemName.."\""..";"..itemNumber..";".."\""..MonDKP_Loot[i].zone.."\""..";"..MonDKP_Loot[i].boss..";"..MonDKP_Loot[i].date..";"..MonDKP_Loot[i].cost.."\n";
         end
       end
     end
