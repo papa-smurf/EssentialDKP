@@ -548,6 +548,9 @@ end
 local function StartBidding()
   local perc;
   mode = MonDKP_DB.modes.mode;
+  if not core.BidInProgress then
+    PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction.ogg", "Master")
+  end
   core.BidInProgress = true;
 
   if mode == "Minimum Bid Values" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Minimum Bid") then
@@ -675,6 +678,7 @@ local function ToggleTimerBtn(self)
     self:SetText(L["STARTBIDDING"])
     SendChatMessage(L["BIDDINGCLOSED"], "RAID_WARNING")
     events:UnregisterEvent("CHAT_MSG_SYSTEM")
+    PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction_sold.ogg", "Master")
     MonDKP:BroadcastStopBidTimer()
   end
 end
@@ -936,7 +940,7 @@ function MonDKP:StartBidTimer(seconds, title, itemIcon)
         _G["MonDKPBiddingStartBiddingButton"]:SetText(L["STARTBIDDING"])
         _G["MonDKPBiddingStartBiddingButton"]:SetScript("OnClick", function (self)
           local pass, err = pcall(ToggleTimerBtn, self)
-
+          
           if core.BiddingWindow.minBid then core.BiddingWindow.minBid:ClearFocus(); end
           core.BiddingWindow.bidTimer:ClearFocus()
           core.BiddingWindow.boss:ClearFocus()
