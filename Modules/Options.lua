@@ -1131,7 +1131,7 @@ function MonDKP:Options()
   MonDKP.ConfigTab4.EnableAudioCheckbox = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetChecked(MonDKP_DB.defaults.EnableAudio)
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetScale(0.8);
-  MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetText("|cff5151de".."Enable AddOn Sounds".."|r");
+  MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetText("|cff5151de".."Enable Addon Sounds".."|r");
   MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetScale(1);
   MonDKP.ConfigTab4.EnableAudioCheckbox.text:SetFontObject("MonDKPSmallLeft")
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetPoint("TOP", MonDKP.ConfigTab4.AutoOpenCheckbox, "BOTTOM", 0, 0);
@@ -1145,8 +1145,8 @@ function MonDKP:Options()
   end)
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT");
-    GameTooltip:SetText("Enable AddOn Sounds", 0.25, 0.75, 0.90, 1, true);
-    GameTooltip:AddLine("When checked enables all AddOn sounds. Mutes when unchecked.", 1.0, 1.0, 1.0, true);
+    GameTooltip:SetText("Enable Addon Sounds", 0.25, 0.75, 0.90, 1, true);
+    GameTooltip:AddLine("When checked enables all Addon sounds. Mutes when unchecked.", 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnLeave", function(self)
@@ -1157,7 +1157,7 @@ function MonDKP:Options()
   MonDKP.ConfigTab4.DisableCattleAuction = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
   MonDKP.ConfigTab4.DisableCattleAuction:SetChecked(MonDKP_DB.defaults.DisableCattleAuction)
   MonDKP.ConfigTab4.DisableCattleAuction:SetScale(0.8);
-  MonDKP.ConfigTab4.DisableCattleAuction.text:SetText("|cff5151de".."Silence of the Cows".."|r");
+  MonDKP.ConfigTab4.DisableCattleAuction.text:SetText("|cff5151de".."The Silence of the Cows".."|r");
   MonDKP.ConfigTab4.DisableCattleAuction.text:SetScale(1);
   MonDKP.ConfigTab4.DisableCattleAuction.text:SetFontObject("MonDKPSmallLeft")
   MonDKP.ConfigTab4.DisableCattleAuction:SetPoint("TOP", MonDKP.ConfigTab4.EnableAudioCheckbox, "BOTTOM", 0, 0);
@@ -1166,7 +1166,7 @@ function MonDKP:Options()
   end)
   MonDKP.ConfigTab4.DisableCattleAuction:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT");
-    GameTooltip:SetText("Silence of the Cows", 0.25, 0.75, 0.90, 1, true);
+    GameTooltip:SetText("The Silence of the Cows", 0.25, 0.75, 0.90, 1, true);
     GameTooltip:AddLine("When checked disables cattle auction sounds. Enables when unchecked.", 1.0, 1.0, 1.0, true);
     GameTooltip:Show();
   end)
@@ -1215,7 +1215,7 @@ function MonDKP:Options()
   -- Save Settings Button
   MonDKP.ConfigTab4.submitSettings = self:CreateButton("BOTTOMLEFT", MonDKP.ConfigTab4, "BOTTOMLEFT", 30, 30, L["SAVESETTINGS"]);
   MonDKP.ConfigTab4.submitSettings:ClearAllPoints();
-  MonDKP.ConfigTab4.submitSettings:SetPoint("TOP", MonDKP.ConfigTab4.AutoOpenCheckbox, "BOTTOMLEFT", 20, -40)
+  MonDKP.ConfigTab4.submitSettings:SetPoint("TOP", MonDKP.ConfigTab4.DisableCattleAuction, "BOTTOMLEFT", 20, -40)
   MonDKP.ConfigTab4.submitSettings:SetSize(90,25)
   MonDKP.ConfigTab4.submitSettings:SetScript("OnClick", function()
     if core.IsOfficer == true then
