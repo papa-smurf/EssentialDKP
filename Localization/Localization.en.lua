@@ -760,7 +760,7 @@ core.L = {
 
   CHANGELOG1 = "Fix /dkp sync to ignore private settings, e.g. addon windows position",
   CHANGELOG2 = "Add audio control options",
-  CHANGELOG3 = "",
+  CHANGELOG3 = "CSV to SSV export changes for easier Raider tracking",
   CHANGELOG4 = "",
   CHANGELOG5 = "",
   CHANGELOG6 = "NOT COMPATIBLE WITH VERSION BELOW v1.4.0",
