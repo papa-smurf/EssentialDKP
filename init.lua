@@ -456,10 +456,11 @@ function MonDKP:OnInitialize(event, name)		-- This is the FIRST function to run 
     end
     if not MonDKP_DB.defaults or not MonDKP_DB.defaults.HistoryLimit then
       MonDKP_DB.defaults = {
-        HistoryLimit = 2500, DKPHistoryLimit = 2500, BidTimerSize = 1.0, MonDKPScaleSize = 1.0, supressNotifications = false, TooltipHistoryCount = 15, SupressTells = true, EnableAudio = true,
+        HistoryLimit = 2500, DKPHistoryLimit = 2500, BidTimerSize = 1.0, MonDKPScaleSize = 1.0, supressNotifications = false, TooltipHistoryCount = 15, SupressTells = true, EnableAudio = true, DisableCattleAuction = false,
       }
     end
     if not MonDKP_DB.defaults.EnableAudio then MonDKP_DB.defaults.EnableAudio = true; end
+    if not MonDKP_DB.defaults.DisableCattleAuction then MonDKP_DB.defaults.DisableCattleAuction = false; end
     if not MonDKP_DB.defaults.ChatFrames then
       MonDKP_DB.defaults.ChatFrames = {}
       for i = 1, NUM_CHAT_WINDOWS do

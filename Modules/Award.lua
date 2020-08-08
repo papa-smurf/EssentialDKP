@@ -133,7 +133,7 @@ local function AwardItem(player, cost, boss, zone, loot, reassign)
 			SendChatMessage(L["CONGRATS"].." "..winner.." "..L["ON"].." "..loot.." @ "..math.abs(cost).." "..L["DKP"], "RAID_WARNING")
 			if MonDKP_DB.modes.AnnounceAward then
 				SendChatMessage(L["CONGRATS"].." "..winner.." "..L["ON"].." "..loot.." @ "..math.abs(cost).." "..L["DKP"], "GUILD")
-      end
+      		end
 
 				
 			if mode == "Static Item Values" or mode == "Roll Based Bidding" or (mode == "Zero Sum" and MonDKP_DB.modes.ZeroSumBidType == "Static") then

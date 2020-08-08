@@ -203,7 +203,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
         elseif command == "StartBidTimer" then
           MonDKP:StartBidTimer(arg1, arg2, arg3)
           if not core.BiddingInProgress then
-            if MonDKP_DB.defaults.EnableAudio then
+            if MonDKP_DB.defaults.EnableAudio and not MonDKP_DB.defaults.DisableCattleAuction then
               PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction.ogg", "Master")
             end
           end
@@ -223,7 +223,7 @@ function MonDKP.Sync:OnCommReceived(prefix, message, distribution, sender)
             end
           end
           C_Timer.After(2, function()
-            if MonDKP_DB.defaults.EnableAudio then
+            if MonDKP_DB.defaults.EnableAudio and not MonDKP_DB.defaults.DisableCattleAuction then
               PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction_sold.ogg", "Master")
             end
             if core.BidInterface and core.BidInterface:IsShown() and not core.BiddingInProgress then

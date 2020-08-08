@@ -549,7 +549,7 @@ local function StartBidding()
   local perc;
   mode = MonDKP_DB.modes.mode;
   if not core.BidInProgress then
-    if MonDKP_DB.defaults.EnableAudio then
+    if MonDKP_DB.defaults.EnableAudio and not MonDKP_DB.defaults.DisableCattleAuction then
       PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction.ogg", "Master")
     end
   end
@@ -680,9 +680,6 @@ local function ToggleTimerBtn(self)
     self:SetText(L["STARTBIDDING"])
     SendChatMessage(L["BIDDINGCLOSED"], "RAID_WARNING")
     events:UnregisterEvent("CHAT_MSG_SYSTEM")
-    if MonDKP_DB.defaults.EnableAudio then
-      PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction_sold.ogg", "Master")
-    end
     MonDKP:BroadcastStopBidTimer()
   end
 end
@@ -756,6 +753,9 @@ end
 function MonDKP:BroadcastStopBidTimer()
   MonDKP.BidTimer:SetScript("OnUpdate", nil)
   MonDKP.BidTimer:Hide()
+  if MonDKP_DB.defaults.EnableAudio and not MonDKP_DB.defaults.DisableCattleAuction then
+    PlaySoundFile("Interface\\AddOns\\EssentialDKP\\Media\\Audio\\lifestock_auction_sold.ogg", "Master")
+  end
   MonDKP.Sync:SendData("MonDKPCommand", "StopBidTimer")
 end
 

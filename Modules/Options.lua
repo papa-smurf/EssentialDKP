@@ -1137,6 +1137,11 @@ function MonDKP:Options()
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetPoint("TOP", MonDKP.ConfigTab4.AutoOpenCheckbox, "BOTTOM", 0, 0);
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnClick", function(self)
     MonDKP_DB.defaults.EnableAudio = self:GetChecked()
+    if MonDKP_DB.defaults.EnableAudio then
+      MonDKP.ConfigTab4.DisableCattleAuction:Show()
+    else
+      MonDKP.ConfigTab4.DisableCattleAuction:Hide()
+    end
   end)
   MonDKP.ConfigTab4.EnableAudioCheckbox:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(self, "ANCHOR_LEFT");
@@ -1148,6 +1153,33 @@ function MonDKP:Options()
     GameTooltip:Hide()
   end)
 
+  -- Audio checkbox
+  MonDKP.ConfigTab4.DisableCattleAuction = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
+  MonDKP.ConfigTab4.DisableCattleAuction:SetChecked(MonDKP_DB.defaults.DisableCattleAuction)
+  MonDKP.ConfigTab4.DisableCattleAuction:SetScale(0.8);
+  MonDKP.ConfigTab4.DisableCattleAuction.text:SetText("|cff5151de".."Silence of the Cows".."|r");
+  MonDKP.ConfigTab4.DisableCattleAuction.text:SetScale(1);
+  MonDKP.ConfigTab4.DisableCattleAuction.text:SetFontObject("MonDKPSmallLeft")
+  MonDKP.ConfigTab4.DisableCattleAuction:SetPoint("TOP", MonDKP.ConfigTab4.EnableAudioCheckbox, "BOTTOM", 0, 0);
+  MonDKP.ConfigTab4.DisableCattleAuction:SetScript("OnClick", function(self)
+    MonDKP_DB.defaults.DisableCattleAuction = self:GetChecked()
+  end)
+  MonDKP.ConfigTab4.DisableCattleAuction:SetScript("OnEnter", function(self)
+    GameTooltip:SetOwner(self, "ANCHOR_LEFT");
+    GameTooltip:SetText("Silence of the Cows", 0.25, 0.75, 0.90, 1, true);
+    GameTooltip:AddLine("When checked disables cattle auction sounds. Enables when unchecked.", 1.0, 1.0, 1.0, true);
+    GameTooltip:Show();
+  end)
+  MonDKP.ConfigTab4.DisableCattleAuction:SetScript("OnLeave", function(self)
+    GameTooltip:Hide()
+  end)
+
+  if MonDKP_DB.defaults.EnableAudio then
+    MonDKP.ConfigTab4.DisableCattleAuction:Show()
+  else
+    MonDKP.ConfigTab4.DisableCattleAuction:Hide()
+  end
+  
   if core.IsOfficer == true then
     -- Supress Broadcast Notifications checkbox
     MonDKP.ConfigTab4.supressTells = CreateFrame("CheckButton", nil, MonDKP.ConfigTab4, "UICheckButtonTemplate");
