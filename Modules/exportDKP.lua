@@ -350,6 +350,68 @@ local function GenerateDKPTables(table, format)
       end
       ExportString = ExportString.."</loothistory>";
     end
+  elseif format == "JSON" then
+    if table == MonDKP_DKPTable then
+      ExportString = "This opperation is currently not supported";
+    elseif table == MonDKP_DKPHistory then
+      ExportString = "This opperation is currently not supported";
+    elseif table == MonDKP_Loot then
+      local numberOfLootEntries = #MonDKP_Loot;
+
+      ExportString = '{"items":[';
+      for entryIndex = 1, numberOfLootEntries do
+        local entry = MonDKP_Loot[entryIndex];
+        local cur = entry.loot;
+        local itemId = strsub(cur, string.find(cur, 'Hitem:') + 6, string.find(cur, ':', string.find(cur, 'Hitem:') + 6) -1);
+
+        -- Make sure awardedFor is positive, paying someone to get an item sounds wrong
+        if entry.cost < 0 then
+          awardedFor = entry.cost * -1;
+        else
+          awardedFor = entry.cost;
+        end
+
+        if entry.zone == nil then
+          awardedIn = '';
+        else
+          awardedIn = entry.zone
+        end
+
+        ExportString = ExportString..string.format('{"itemId":%s,"awardedOn":%s,"awardedTo":"%s","awardedFor":%s,"awardedIn":"%s"}',
+          itemId,
+          entry.date,
+          entry.player,
+          awardedFor,
+          awardedIn
+        );
+
+        -- there are more entries coming so add a comma (,)
+        if entryIndex ~= numberOfLootEntries then
+          ExportString = ExportString..',';
+        end
+      end
+      ExportString = ExportString.."],";
+      ExportString = ExportString..'"bids":[';
+
+      local numberOfBidEntries = #MonDKP_DB.allbids;
+      for entryIndex = 1, numberOfBidEntries do
+        local entry = MonDKP_DB.allbids[entryIndex];
+        local itemId = strsub(entry.item, string.find(entry.item, 'Hitem:') + 6, string.find(entry.item, ':', string.find(entry.item, 'Hitem:') + 6) -1);
+
+        ExportString = ExportString..string.format('{"itemId":%s,"on":%s,"by":"%s","bid":%s}',
+          itemId,
+          entry.on,
+          entry.player,
+          entry.bid
+        );
+
+        -- there are more entries coming so add a comma (,)
+        if entryIndex ~= numberOfBidEntries then
+          ExportString = ExportString..',';
+        end
+      end
+      ExportString = ExportString.."]}";
+    end
   end
 
 
@@ -475,6 +537,8 @@ function MonDKPExportBox_Show(text)
         Format.text, Format.arg1, Format.checked, Format.isNotRadio = "CSV", "CSV", "CSV" == CurFormat, false
         UIDropDownMenu_AddButton(Format)
         Format.text, Format.arg1, Format.checked, Format.isNotRadio = "XML", "XML", "XML" == CurFormat, false
+        UIDropDownMenu_AddButton(Format)
+        Format.text, Format.arg1, Format.checked, Format.isNotRadio = "JSON", "JSON", "JSON" == CurFormat, false
         UIDropDownMenu_AddButton(Format)
       end)
 
